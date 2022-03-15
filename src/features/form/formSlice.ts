@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { toBase64 } from "../../app/services"
+import { fromBase64, toBase64 } from "../../app/services"
 
 export interface FormState {
 	amount: number
@@ -19,10 +19,27 @@ const initialState: FormState = {
 
 const calculateTotal = (state: FormState): number => state.amount * state.price * (1 - state.discount)
 
+const shareParam = "share"
+
 const formSlice = createSlice({
 	name: "form",
 	initialState,
 	reducers: {
+		init: (state) => {
+			const queryString = window.location.search
+			const urlParams = new URLSearchParams(queryString)
+
+			if (urlParams.has(shareParam)) {
+				const share = urlParams.get(shareParam) as string
+				const sharedState = fromBase64(share) as FormState
+
+				state.amount = sharedState.amount
+				state.price = sharedState.price
+				state.discount = sharedState.discount
+				state.total = sharedState.total
+				state.share = share
+			}
+		},
 		setAmount: (state, action: PayloadAction<number>) => {
 			state.amount = action.payload
 			state.total = calculateTotal(state)
@@ -39,10 +56,11 @@ const formSlice = createSlice({
 			const shareId = toBase64(state)
 			state.share = shareId
 
-			navigator.clipboard.writeText(window.location + "?share=" + shareId);
+			const shareUrl = `${window.location.origin}/?${shareParam}=${shareId}`
+			navigator.clipboard.writeText(shareUrl);
 		}
 	}
 })
 
-export const { setAmount, setPrice, setDiscount, share } = formSlice.actions
+export const { setAmount, setPrice, setDiscount, share, init } = formSlice.actions
 export const formReducer = formSlice.reducer

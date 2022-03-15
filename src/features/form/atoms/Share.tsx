@@ -22,7 +22,10 @@ export const Share: FC<IShare> = ({ selector, action }) => {
 				value={value}
 			/>
 
-			<button onClick={() => dispatch(action())}>Share</button>
+			<button onClick={(e) => {
+				e.preventDefault()
+				dispatch(action())
+			}}>Share</button>
 		</div>
 	)
 }

@@ -1,10 +1,14 @@
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import { selectAmount, selectDiscount, selectPrice, selectTotal, selectShare } from "./formSelectors"
-import { setAmount, setDiscount, setPrice, share } from "./formSlice"
+import { setAmount, setDiscount, setPrice, share, init } from "./formSlice"
 import { Amount, Price, Discount, Total, Share } from './atoms'
+import { useAppDispatch } from "../../app/hooks"
 
 
 export const Form: FC = () => {
+	const dispatch = useAppDispatch()
+	useEffect(() => { dispatch(init()) }, [dispatch])
+
 	return (
 		<form>
 			<Amount selector={selectAmount} change={setAmount} />
