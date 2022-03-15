@@ -1,9 +1,9 @@
 import { FC } from "react"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { IField } from "./IField"
+import { IAtom } from "./IAtom"
 
 
-export const Amount: FC<IField<number>> = ({ selector, change }) => {
+export const Amount: FC<IAtom<number>> = ({ selector, change }) => {
 	const value = useAppSelector(selector)
 	const dispatch = useAppDispatch()
 
