@@ -1,7 +1,7 @@
 import { FC } from "react"
-import { selectAmount, selectDiscount, selectPrice, selectTotal } from "./formSelectors"
-import { setAmount, setDiscount, setPrice } from "./formSlice"
-import { Amount, Price, Discount, Total } from './atoms'
+import { selectAmount, selectDiscount, selectPrice, selectTotal, selectShare } from "./formSelectors"
+import { setAmount, setDiscount, setPrice, share } from "./formSlice"
+import { Amount, Price, Discount, Total, Share } from './atoms'
 
 
 export const Form: FC = () => {
@@ -19,7 +19,7 @@ export const Form: FC = () => {
 
 			<hr />
 
-
+			<Share selector={selectShare} action={share} />
 
 		</form>
 	)

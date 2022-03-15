@@ -1,10 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { toBase64 } from "../../app/services"
 
 export interface FormState {
 	amount: number
 	price: number
 	discount: number
 	total: number
+	share: string
 }
 
 const initialState: FormState = {
@@ -12,6 +14,7 @@ const initialState: FormState = {
 	price: 10,
 	discount: 0.05,
 	total: 0,
+	share: ''
 }
 
 const calculateTotal = (state: FormState): number => state.amount * state.price * (1 - state.discount)
@@ -32,8 +35,14 @@ const formSlice = createSlice({
 			state.discount = action.payload
 			state.total = calculateTotal(state)
 		},
+		share: (state) => {
+			const shareId = toBase64(state)
+			state.share = shareId
+
+			navigator.clipboard.writeText(window.location + "?share=" + shareId);
+		}
 	}
 })
 
-export const { setAmount, setPrice, setDiscount } = formSlice.actions
+export const { setAmount, setPrice, setDiscount, share } = formSlice.actions
 export const formReducer = formSlice.reducer
