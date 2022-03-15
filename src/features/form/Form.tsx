@@ -1,7 +1,16 @@
 import { FC } from "react"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { selectAmount, selectDiscount, selectPrice, selectTotal } from "./formSelectors"
+import { setAmount, setDiscount, setPrice } from "./formSlice"
 
 
 export const Form: FC = () => {
+	const amount = useAppSelector(selectAmount)
+	const price = useAppSelector(selectPrice)
+	const discount = useAppSelector(selectDiscount)
+	const total = useAppSelector(selectTotal)
+
+	const dispatch = useAppDispatch()
 
 	return (
 		<form>
@@ -13,7 +22,10 @@ export const Form: FC = () => {
 					className="form-control"
 					aria-describedby="emailHelp"
 					placeholder="Enter amount"
+					value={amount}
+					onChange={(e) => dispatch(setAmount(Number(e.target.value)))}
 				/>
+
 				<small id="amountHelp" className="form-text text-muted">
 					We'll calculate total price by provided amount.
 				</small>
@@ -26,6 +38,8 @@ export const Form: FC = () => {
 					type="number"
 					className="form-control"
 					placeholder="Enter price"
+					value={price}
+					onChange={(e) => dispatch(setPrice(Number(e.target.value)))}
 				/>
 			</div>
 
@@ -36,6 +50,11 @@ export const Form: FC = () => {
 					type="number"
 					className="form-control"
 					placeholder="Enter discount"
+					min={0}
+					max={1}
+					step={0.01}
+					value={discount}
+					onChange={(e) => dispatch(setDiscount(Number(e.target.value)))}
 				/>
 			</div>
 
@@ -50,6 +69,7 @@ export const Form: FC = () => {
 					type="number"
 					className="form-control"
 					placeholder="Enter total"
+					value={total.toFixed(2)}
 				/>
 			</div>
 		</form>
