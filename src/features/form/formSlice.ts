@@ -57,7 +57,7 @@ const formSlice = createSlice({
 			state.share = shareId
 
 			const shareUrl = `${window.location.origin}/?${shareParam}=${shareId}`
-			navigator.clipboard.writeText(shareUrl);
+			navigator.clipboard.writeText(shareUrl)
 		}
 	}
 })
